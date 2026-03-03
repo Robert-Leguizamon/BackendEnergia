@@ -33,6 +33,8 @@ public class SecurityConfig {
             .requestMatchers("/api/companys/**").permitAll()
             .requestMatchers("/api/powerplants/**").permitAll()
             .requestMatchers("/api/energytypes/**").permitAll()
+            .requestMatchers("/api/measurementypes/**").permitAll()
+            .requestMatchers("/api/energyrecords/**").permitAll()
             .anyRequest().authenticated())
         .formLogin(form -> form.disable())
         .httpBasic(basic -> basic.disable());

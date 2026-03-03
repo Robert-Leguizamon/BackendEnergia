@@ -17,10 +17,7 @@ public class MeasurementType {
   private String name;
 
   private String unit;
-  @JsonIgnore
-  @OneToMany(mappedBy = "measurementType")
-  private List<EnergyRecord> energyRecords;
-
+  
   public MeasurementType() {
   }
 
@@ -55,5 +52,9 @@ public class MeasurementType {
   public void setEnergyRecords(List<EnergyRecord> energyRecords) {
     this.energyRecords = energyRecords;
   }
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "measurementType")
+  private List<EnergyRecord> energyRecords;
 
 }

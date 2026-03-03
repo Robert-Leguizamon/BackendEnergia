@@ -56,8 +56,8 @@ public class Company {
   @JoinColumn(name = "country_id", nullable = false)
   private Country country;
 
-  @JsonIgnore
   @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
   private List<PowerPlant> powerPlants;
 
 }

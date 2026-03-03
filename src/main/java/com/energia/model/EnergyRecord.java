@@ -21,13 +21,6 @@ public class EnergyRecord {
   @Column(nullable = false, precision = 15, scale = 2)
   private BigDecimal value;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "power_plant_id", nullable = false)
-  private PowerPlant powerPlant;
-
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "measurement_type_id", nullable = false)
-  private MeasurementType measurementType;
 
   public EnergyRecord() {
   }
@@ -79,5 +72,13 @@ public class EnergyRecord {
   public void setMeasurementType(MeasurementType measurementType) {
     this.measurementType = measurementType;
   }
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "power_plant_id", nullable = false)
+  private PowerPlant powerPlant;
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "measurement_type_id", nullable = false)
+  private MeasurementType measurementType;
 
 }
