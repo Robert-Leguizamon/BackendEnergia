@@ -1,0 +1,28 @@
+spring:
+  # Informacion de la base de datos  
+  datasource:
+    url: jdbc:postgresql://149.130.174.114:5432/energia_db
+    username: postgres
+    password: Garfiel17$
+
+  # Informacion para acceder a la api 
+  security:
+    user:
+      name: admin
+      password: 12345
+
+  # Informacion para acceder a la base de datos
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+# Informacion del server de la api
+server:
+  port: 8080
+  error:
+    include-message: always
