@@ -35,6 +35,7 @@ public class SecurityConfig {
             .requestMatchers("/api/energytypes/**").permitAll()
             .requestMatchers("/api/measurementypes/**").permitAll()
             .requestMatchers("/api/energyrecords/**").permitAll()
+            // .requestMatchers("/api/produccion-renovable/**").permitAll()
             .anyRequest().authenticated())
         .formLogin(form -> form.disable())
         .httpBasic(basic -> basic.disable());

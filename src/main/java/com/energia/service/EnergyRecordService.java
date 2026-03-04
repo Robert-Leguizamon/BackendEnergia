@@ -8,6 +8,7 @@ import com.energia.exception.ResourceNotFoundException;
 import com.energia.model.EnergyRecord;
 import com.energia.model.MeasurementType;
 import com.energia.model.PowerPlant;
+import com.energia.projection.ProduccionRegionProjection;
 import com.energia.repository.EnergyRecordRepository;
 import com.energia.repository.MeasurementTypeRepository;
 import com.energia.repository.PowerPlantRepository;
@@ -39,5 +40,15 @@ public class EnergyRecordService {
 
   public List<EnergyRecord> findAll() {
     return energyRecordRepository.findAll();
+  }
+
+  public List<ProduccionRegionProjection> getRenewableProductionByYear(Long year) {
+    List<ProduccionRegionProjection> results = energyRecordRepository.findRenewableProductionByYear(year);
+    if (results.isEmpty()) {
+      throw new ResourceNotFoundException("No se encontraron registros de producción renovable para el año " + year);
+    }
+    return results;
+    // .get(0); // Retorna el primer resultado, aunque podría retornar la lista
+    // completa si se desea
   }
 }
