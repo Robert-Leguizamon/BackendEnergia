@@ -1,6 +1,7 @@
 package com.energia.controller;
 
 import com.energia.dto.LoginRequest;
+import com.energia.dto.LoginResponse;
 import com.energia.model.User;
 import com.energia.service.UserService;
 
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:4200") // <-- Esto para que se pueda conectar con el frontend de angular
 
 public class UserController {
   // private final UserRepository userRepository;
@@ -52,11 +54,18 @@ public class UserController {
   }
 
   // el ? se utiliza desde la url
-  @PostMapping("/login")
-  public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-    String response = userService.login(request);
-    return ResponseEntity.ok(response);
+  // @PostMapping("/login")
+  // public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+  // String response = userService.login(request);
+  // return ResponseEntity.ok(response);
 
+  // }
+  @PostMapping("/login")
+  public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+    // LoginResponse es una clase DTO que contiene el token JWT y posiblemente otros
+    // datos relacionados con el usuario
+    LoginResponse response = userService.login(request);
+    return ResponseEntity.ok(response);
   }
 
   // @DeleteMapping("/{id}")

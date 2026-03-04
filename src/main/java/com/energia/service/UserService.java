@@ -1,6 +1,7 @@
 package com.energia.service;
 
 import com.energia.dto.LoginRequest;
+import com.energia.dto.LoginResponse;
 // import com.energia.model.Audit_log;
 import com.energia.model.User;
 import com.energia.exception.ResourceNotFoundException;
@@ -66,7 +67,8 @@ public class UserService {
     return upUser;
   }
 
-  public String login(LoginRequest request) {
+  // public String login(LoginRequest request) {
+  public LoginResponse login(LoginRequest request) {
     Optional<User> optionalUser = userRepository.findByUsername(request.getUsername());
     if (optionalUser.isEmpty()) {
       throw new ResourceNotFoundException("Usuario no encontrado");
@@ -79,7 +81,34 @@ public class UserService {
     // --- AQUÍ CREAMOS EL LOG AUTOMÁTICAMENTE ---
     audit_LogService.registrarAccion(user, "INICIO_SESION_EXITOSO");
 
-    return "Login correcto";
+    // return "Login correcto";
+    return new LoginResponse("sin_token", user.getUsername(), user.getRole());
   }
+
+  // @PostMapping("/login")
+  // public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+  // Optional<User> optionalUser =
+  // userRepository.findByUsername(request.getUsername());
+
+  // // 1. Validaciones (Manejo de errores con códigos HTTP)
+  // if (optionalUser.isEmpty() || !passwordEncoder.matches(request.getPassword(),
+  // optionalUser.get().getPassword())) {
+  // // Es mejor devolver 401 Unauthorized por seguridad genérica
+  // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales
+  // inválidas");
+  // }
+
+  // User user = optionalUser.get();
+
+  // // 2. Generar el Token (JWT es el estándar recomendado)
+  // String token = jwtService.generateToken(user); // Debes tener un servicio que
+  // cree el JWT
+
+  // // 3. Registrar auditoría
+  // audit_LogService.registrarAccion(user, "INICIO_SESION_EXITOSO");
+
+  // // 4. Retornar el objeto JSON
+  // return ResponseEntity.ok(new LoginResponse(token, user.getUsername()));
+  // }
 
 }
