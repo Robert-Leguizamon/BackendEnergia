@@ -28,6 +28,9 @@ public class UserService {
   }
 
   public User crearUsuario(User user) {
+    if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña es obligatoria.");
+    }
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     User newUser = userRepository.save(user);
     audit_LogService.registrarAccion(newUser, "USUARIO_CREADO_SISTEMA");
@@ -67,6 +70,9 @@ public class UserService {
   }
 
   public String login(LoginRequest request) {
+    if (request.getPassword() == null || request.getPassword().trim().isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña es obligatoria.");
+    }
     Optional<User> optionalUser = userRepository.findByUsername(request.getUsername());
     if (optionalUser.isEmpty()) {
       throw new ResourceNotFoundException("Usuario no encontrado");
