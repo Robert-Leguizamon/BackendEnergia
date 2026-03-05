@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 // esto sirve para poder utilizar esta clase con cualquier motor de base de datos.
 import jakarta.persistence.*;
@@ -29,7 +30,7 @@ public class User {
   private String email;
 
   @Column(nullable = false)
-  @JsonIgnore // se oculta para que no se envié en la api al frontend
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // se recibe en request, pero no se envía en response
   private String password;
 
   @Column(nullable = false)
