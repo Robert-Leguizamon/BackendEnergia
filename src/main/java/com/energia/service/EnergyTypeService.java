@@ -26,4 +26,13 @@ public class EnergyTypeService {
     return energyTypeRepository.findAll();
   }
 
+  public EnergyType findById(Long id) {
+    return energyTypeRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("EnergyType not found"));
+  }
+
+  public List<EnergyType> findByRenewable(Boolean renewable) {
+    return energyTypeRepository.findByRenewable(renewable);
+  }
+
 }

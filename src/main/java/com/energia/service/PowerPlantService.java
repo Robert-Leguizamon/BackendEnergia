@@ -57,4 +57,16 @@ public class PowerPlantService {
     return powerPlantRepository.findAll();
   }
 
+  public PowerPlant findById(Long id) {
+    return powerPlantRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("PowerPlant not found"));
+  }
+
+  public List<PowerPlant> findByCompany(Long companyId) {
+    return powerPlantRepository.findByCompanyId(companyId);
+  }
+
+  public List<PowerPlant> findByRegion(Long regionId) {
+    return powerPlantRepository.findByRegionId(regionId);
+  }
 }

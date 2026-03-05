@@ -15,15 +15,19 @@ import lombok.RequiredArgsConstructor;
 public class MeasurementTypeService {
   public final MeasurementTypeRepository measurementTypeRepository;
 
-  public MeasurementType save(MeasurementType measurementType){
-    if (measurementTypeRepository.existsByName(measurementType.getName())){
+  public MeasurementType save(MeasurementType measurementType) {
+    if (measurementTypeRepository.existsByName(measurementType.getName())) {
       throw new ResourceNotFoundException("el measuremente type ya existe");
     }
     return measurementTypeRepository.save(measurementType);
   }
 
-    public List<MeasurementType> findAll() {
+  public List<MeasurementType> findAll() {
     return measurementTypeRepository.findAll();
   }
 
+  public MeasurementType findById(Long id) {
+    return measurementTypeRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("MeasurementType not found"));
+  }
 }

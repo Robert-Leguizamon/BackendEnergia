@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,15 +19,20 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/measurementypes")
 @RequiredArgsConstructor
 public class MeasurementTypeController {
-    private final MeasurementTypeService measurementTypeService;
+  private final MeasurementTypeService measurementTypeService;
 
-    @PostMapping
-    public ResponseEntity<MeasurementType> create (@RequestBody MeasurementType measurementType){
-        return ResponseEntity.ok(measurementTypeService.save(measurementType));
-    }
+  @PostMapping
+  public ResponseEntity<MeasurementType> create(@RequestBody MeasurementType measurementType) {
+    return ResponseEntity.ok(measurementTypeService.save(measurementType));
+  }
 
-    @GetMapping
-    public ResponseEntity<List<MeasurementType>> findAll() {
+  @GetMapping
+  public ResponseEntity<List<MeasurementType>> findAll() {
     return ResponseEntity.ok(measurementTypeService.findAll());
+  }
+
+  @GetMapping("/{id}")
+  public MeasurementType findById(@PathVariable Long id) {
+    return measurementTypeService.findById(id);
   }
 }
