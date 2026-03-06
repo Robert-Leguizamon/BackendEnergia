@@ -42,10 +42,9 @@ public class RegionService {
     Region region = regionRepository.findById(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Region no encontrada"));
 
-    // if (regionDetail.getName() != null && !regionDetail.getName().isEmpty()) {
-    // region.setName(regionDetail.getName());
-    // }
-    region.setName(regionDetail.getName());
+    if (regionDetail.getName() != null && !regionDetail.getName().isEmpty()) {
+      region.setName(regionDetail.getName());
+    }
     return regionRepository.save(region);
   }
 

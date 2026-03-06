@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,4 +37,9 @@ public class CountryController {
     return ResponseEntity.ok(countryService.findById(id));
   }
 
+  
+  @PutMapping("/{id}")
+  public Country update(@PathVariable Long id, @RequestBody Country countryDetails) {
+    return countryService.update(id, countryDetails);
+  }
 }
