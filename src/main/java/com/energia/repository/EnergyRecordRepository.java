@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import com.energia.model.EnergyRecord;
 import com.energia.projection.PorcentajeRenovableProjection;
 import com.energia.projection.ProduccionRegionProjection;
+import com.energia.projection.TendenciaSolarProjection;
 
 import org.springframework.stereotype.Repository;
 
@@ -43,5 +44,17 @@ public interface EnergyRecordRepository extends JpaRepository<EnergyRecord, Long
       "WHERE er.year = :year " +
       "GROUP BY r.name")
   List<PorcentajeRenovableProjection> findRenewablePercentageByRegion(@Param("year") Long year);
+
+  @Query("SELECT new com.energia.projection.TendenciaSolarProjection(" +
+      "er.year, SUM(er.value), mt.unit) " +
+      "FROM EnergyRecord er " +
+      "JOIN er.powerPlant pp " +
+      "JOIN pp.energyType et " +
+      "JOIN er.measurementType mt " +
+      "WHERE et.name = 'Solar' " +
+      "AND mt.name = 'Capacidad instalada' " +
+      "GROUP BY er.year, mt.unit " +
+      "ORDER BY er.year ASC")
+  List<TendenciaSolarProjection> findSolarCapacityTrend();
 
 }
