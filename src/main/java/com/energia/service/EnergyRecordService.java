@@ -8,11 +8,13 @@ import com.energia.exception.ResourceNotFoundException;
 import com.energia.model.EnergyRecord;
 import com.energia.model.MeasurementType;
 import com.energia.model.PowerPlant;
+import com.energia.projection.PorcentajeRenovableProjection;
 import com.energia.projection.ProduccionRegionProjection;
 import com.energia.repository.EnergyRecordRepository;
 import com.energia.repository.MeasurementTypeRepository;
 import com.energia.repository.PowerPlantRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -42,6 +44,13 @@ public class EnergyRecordService {
     return energyRecordRepository.findAll();
   }
 
+  /**
+   * Obtiene el resumen de producción de energía renovable por región para un año
+   * dado.
+   * 
+   * @param year Año de consulta
+   * @return Lista de proyecciones con los datos agregados
+   */
   public List<ProduccionRegionProjection> getRenewableProductionByYear(Long year) {
     List<ProduccionRegionProjection> results = energyRecordRepository.findRenewableProductionByYear(year);
     if (results.isEmpty()) {
@@ -50,5 +59,24 @@ public class EnergyRecordService {
     return results;
     // .get(0); // Retorna el primer resultado, aunque podría retornar la lista
     // completa si se desea
+  }
+
+  /**
+   * Obtiene el balance de energía por región: producción renovable vs consumo
+   * total, calculando el porcentaje de participación renovable.
+   * 
+   * @param year Año de consulta
+   * @return Lista de proyecciones con los cálculos realizados
+   */
+  // @Transactional(readOnly = true) para que Spring optimice la conexión a la
+  // base de datos, ya que es una operación de solo lectura.
+  public List<PorcentajeRenovableProjection> getRenewablePercentageByRegion(Long year) {
+    List<PorcentajeRenovableProjection> results = energyRecordRepository.findRenewablePercentageByRegion(year);
+
+    if (results.isEmpty()) {
+      throw new ResourceNotFoundException("No se encontraron registros para calcular el porcentaje en el año " + year);
+    }
+
+    return results;
   }
 }
