@@ -1,16 +1,21 @@
 package com.energia.service;
 
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
+import org.hibernate.query.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.energia.exception.ResourceNotFoundException;
 import com.energia.model.EnergyRecord;
 import com.energia.model.MeasurementType;
 import com.energia.model.PowerPlant;
+import com.energia.projection.ParticipacionGlobalProjection;
 import com.energia.projection.PorcentajeRenovableProjection;
 import com.energia.projection.ProduccionRegionProjection;
 import com.energia.projection.TendenciaSolarProjection;
+import com.energia.projection.TopPaisEolicoProjection;
 import com.energia.repository.EnergyRecordRepository;
 import com.energia.repository.MeasurementTypeRepository;
 import com.energia.repository.PowerPlantRepository;
@@ -93,6 +98,41 @@ public class EnergyRecordService {
 
     if (results.isEmpty()) {
       throw new ResourceNotFoundException("No se encontraron registros de capacidad instalada para energía solar.");
+    }
+
+    return results;
+  }
+
+  /**
+   * Obtiene los 10 países con mayor producción eólica en un año específico.
+   * 
+   * @param year Año de consulta
+   * @return Lista de los 10 países con más producción eólica
+   */
+  // @Transactional(readOnly = true) para que Spring optimice la conexión a la
+  // base de datos, ya que es una operación de solo lectura.
+  public List<TopPaisEolicoProjection> getTop10WindProductionByYear(Long year) {
+    // Definimos el límite: página 0, tamaño 10
+    // Como la consulta en el repositorio ya tiene el ORDER BY DESC,
+    // esto nos traerá automáticamente los 10 más altos.
+    Pageable topTen = PageRequest.of(0, 10);
+
+    List<TopPaisEolicoProjection> results = energyRecordRepository.findTopCountriesWindProduction(year, topTen);
+
+    if (results.isEmpty()) {
+      throw new ResourceNotFoundException("No se encontraron datos de producción eólica para el año " + year);
+    }
+
+    return results;
+  }
+
+  // @Transactional(readOnly = true) para que Spring optimice la conexión a la
+  // base de datos, ya que es una operación de solo lectura.
+  public List<ParticipacionGlobalProjection> getGlobalConsumptionShare(Long year) {
+    List<ParticipacionGlobalProjection> results = energyRecordRepository.findGlobalConsumptionShare(year);
+
+    if (results.isEmpty()) {
+      throw new ResourceNotFoundException("No hay datos de consumo para el año " + year);
     }
 
     return results;
