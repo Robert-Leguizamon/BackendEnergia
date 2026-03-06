@@ -5,7 +5,10 @@ import com.energia.model.Region;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.energia.exception.ResourceNotFoundException;
 import com.energia.repository.CountryRepository;
@@ -35,8 +38,19 @@ public class RegionService {
     return regionRepository.save(region);
   }
 
+  public Region update(Long id, Region regionDetail) {
+    Region region = regionRepository.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Region no encontrada"));
+
+    // if (regionDetail.getName() != null && !regionDetail.getName().isEmpty()) {
+    // region.setName(regionDetail.getName());
+    // }
+    region.setName(regionDetail.getName());
+    return regionRepository.save(region);
+  }
+
   public List<Region> findAll() {
-    return regionRepository.findAll();
+    return regionRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
   }
 
   public Region findById(Long id) {
