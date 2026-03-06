@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.energia.model.EnergyRecord;
 import com.energia.projection.PorcentajeRenovableProjection;
 import com.energia.projection.ProduccionRegionProjection;
+import com.energia.projection.TendenciaSolarProjection;
 import com.energia.service.EnergyRecordService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,16 @@ public class EnergyRecordController {
   @GetMapping("/porcentaje-renovable/{year}")
   public ResponseEntity<List<PorcentajeRenovableProjection>> getRenewablePercentageByRegion(@PathVariable Long year) {
     List<PorcentajeRenovableProjection> reporte = energyRecordService.getRenewablePercentageByRegion(year);
+    return ResponseEntity.ok(reporte);
+  }
+
+  /**
+   * Endpoint para obtener la tendencia histórica de la capacidad solar instalada.
+   * URL: GET /api/energyrecords/tendencia-solar
+   */
+  @GetMapping("/tendencia-solar")
+  public ResponseEntity<List<TendenciaSolarProjection>> getSolarTrend() {
+    List<TendenciaSolarProjection> reporte = energyRecordService.getSolarCapacityTrend();
     return ResponseEntity.ok(reporte);
   }
 }

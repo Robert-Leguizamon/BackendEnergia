@@ -51,7 +51,7 @@ public interface EnergyRecordRepository extends JpaRepository<EnergyRecord, Long
       "JOIN er.powerPlant pp " +
       "JOIN pp.energyType et " +
       "JOIN er.measurementType mt " +
-      "WHERE et.name = 'Solar' " +
+      "WHERE et.name like '%Solar%' " +
       "AND mt.name = 'Capacidad instalada' " +
       "GROUP BY er.year, mt.unit " +
       "ORDER BY er.year ASC")

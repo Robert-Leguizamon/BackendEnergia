@@ -10,6 +10,7 @@ import com.energia.model.MeasurementType;
 import com.energia.model.PowerPlant;
 import com.energia.projection.PorcentajeRenovableProjection;
 import com.energia.projection.ProduccionRegionProjection;
+import com.energia.projection.TendenciaSolarProjection;
 import com.energia.repository.EnergyRecordRepository;
 import com.energia.repository.MeasurementTypeRepository;
 import com.energia.repository.PowerPlantRepository;
@@ -75,6 +76,23 @@ public class EnergyRecordService {
 
     if (results.isEmpty()) {
       throw new ResourceNotFoundException("No se encontraron registros para calcular el porcentaje en el año " + year);
+    }
+
+    return results;
+  }
+
+  /**
+   * Obtiene la evolución histórica de la capacidad solar instalada.
+   * 
+   * @return Lista de proyecciones ordenadas por año
+   */
+  // @Transactional(readOnly = true) para que Spring optimice la conexión a la
+  // base de datos, ya que es una operación de solo lectura.
+  public List<TendenciaSolarProjection> getSolarCapacityTrend() {
+    List<TendenciaSolarProjection> results = energyRecordRepository.findSolarCapacityTrend();
+
+    if (results.isEmpty()) {
+      throw new ResourceNotFoundException("No se encontraron registros de capacidad instalada para energía solar.");
     }
 
     return results;
