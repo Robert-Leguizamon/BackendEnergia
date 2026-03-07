@@ -4,6 +4,7 @@ import com.energia.model.Audit_log;
 import com.energia.model.User;
 import com.energia.repository.Audit_logRepository;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Audit_logService {
   }
 
   public List<Audit_log> findAll() {
-    return audit_logRepository.findAll();
+    return audit_logRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
   }
 
   public void registrarAccion(User user, String accion) {

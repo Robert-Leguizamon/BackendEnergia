@@ -6,6 +6,7 @@ import com.energia.dto.LoginResponse;
 import com.energia.model.User;
 import com.energia.exception.ResourceNotFoundException;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,11 +40,21 @@ public class UserService {
   }
 
   public List<User> findAll() {
-    return userRepository.findAll();
+    return userRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
   }
 
   public Optional<User> findById(Long id) {
     return userRepository.findById(id);
+  }
+
+  public Optional<User> delete(User user) {
+    if (userRepository.existsById(user.getId())) {
+      // audit_LogService.registrarAccion(user, "USUARIO_ELIMINADO_SISTEMA");
+      userRepository.delete(user);
+      return Optional.of(user);
+    } else {
+      return Optional.empty();
+    }
   }
 
   public User update(Long id, User userDetails) {
@@ -70,7 +81,6 @@ public class UserService {
     return upUser;
   }
 
-  // public String login(LoginRequest request) {
   public LoginResponse login(LoginRequest request) {
     Optional<User> optionalUser = userRepository.findByUsername(request.getUsername());
     if (optionalUser.isEmpty()) {

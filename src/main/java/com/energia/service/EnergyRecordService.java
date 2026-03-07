@@ -2,8 +2,7 @@ package com.energia.service;
 
 import java.util.List;
 import org.springframework.data.domain.Pageable;
-
-import org.hibernate.query.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,6 @@ import com.energia.repository.EnergyRecordRepository;
 import com.energia.repository.MeasurementTypeRepository;
 import com.energia.repository.PowerPlantRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -47,7 +45,7 @@ public class EnergyRecordService {
   }
 
   public List<EnergyRecord> findAll() {
-    return energyRecordRepository.findAll();
+    return energyRecordRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
   }
 
   /**

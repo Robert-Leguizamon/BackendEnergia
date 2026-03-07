@@ -2,6 +2,7 @@ package com.energia.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.energia.exception.ResourceNotFoundException;
@@ -35,7 +36,7 @@ public class CompanyService {
   }
 
   public List<Company> findAll() {
-    return companyRepository.findAll();
+    return companyRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
   }
 
   public Company findById(Long id) {

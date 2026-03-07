@@ -49,7 +49,7 @@ public class RegionService {
   }
 
   public List<Region> findAll() {
-    return regionRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+    return regionRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
   }
 
   public Region findById(Long id) {

@@ -2,6 +2,7 @@ package com.energia.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.energia.exception.ResourceNotFoundException;
@@ -23,7 +24,7 @@ public class MeasurementTypeService {
   }
 
   public List<MeasurementType> findAll() {
-    return measurementTypeRepository.findAll();
+    return measurementTypeRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
   }
 
   public MeasurementType findById(Long id) {

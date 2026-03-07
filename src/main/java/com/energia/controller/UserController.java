@@ -68,19 +68,18 @@ public class UserController {
     return ResponseEntity.ok(response);
   }
 
-  // @DeleteMapping("/{id}")
-  // public ResponseEntity<Void> delete(@PathVariable Long id) {
-  // // 1. Verificar si existe (o usar findById directamente)
-  // User user = userService.findById(id)
-  // .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario
-  // no encontrado."));
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> delete(@PathVariable Long id) {
+    // 1. Verificar si existe (o usar findById directamente)
+    User user = userService.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado."));
 
-  // // 2. Borrar de verdad
-  // userService.delete(user);
+    // 2. Borrar de verdad
+    userService.delete(user);
 
-  // // 3. Retornar 204 No Content (el estándar profesional)
-  // return ResponseEntity.noContent().build();
-  // }
+    // 3. Retornar 204 No Content (el estándar profesional)
+    return ResponseEntity.noContent().build();
+  }
 
   /*
    * @RestController

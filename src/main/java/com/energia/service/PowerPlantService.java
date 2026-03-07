@@ -8,6 +8,7 @@ import com.energia.model.EnergyType;
 import com.energia.model.PowerPlant;
 import com.energia.model.Region;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.energia.repository.CompanyRepository;
@@ -54,7 +55,7 @@ public class PowerPlantService {
   }
 
   public List<PowerPlant> findAll() {
-    return powerPlantRepository.findAll();
+    return powerPlantRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
   }
 
   public PowerPlant findById(Long id) {
