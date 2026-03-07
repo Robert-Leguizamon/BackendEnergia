@@ -43,7 +43,8 @@ public class EnergyRecordController {
   }
 
   @GetMapping("/porcentaje-renovable/{year}")
-  public ResponseEntity<List<PorcentajeRenovableProjection>> getRenewablePercentageByRegion(@PathVariable Long year) {
+  public ResponseEntity<List<PorcentajeRenovableProjection>> getRenewablePercentageByRegion(
+      @PathVariable Integer year) {
     List<PorcentajeRenovableProjection> reporte = energyRecordService.getRenewablePercentageByRegion(year);
     return ResponseEntity.ok(reporte);
   }

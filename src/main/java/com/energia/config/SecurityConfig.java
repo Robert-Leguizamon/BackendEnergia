@@ -44,6 +44,7 @@ public class SecurityConfig {
             .requestMatchers("/api/porcentaje-renovable/**").permitAll()
             .requestMatchers("/api/top-10-paises-eolico/**").permitAll()
             .requestMatchers("/api/participacion-consumo/**").permitAll()
+            .requestMatchers("/api/dashboard/**").permitAll()
             // .requestMatchers("/api/produccion-renovable/**").permitAll()
             .anyRequest().authenticated())
         .formLogin(form -> form.disable())

@@ -74,7 +74,7 @@ public class EnergyRecordService {
    */
   // @Transactional(readOnly = true) para que Spring optimice la conexión a la
   // base de datos, ya que es una operación de solo lectura.
-  public List<PorcentajeRenovableProjection> getRenewablePercentageByRegion(Long year) {
+  public List<PorcentajeRenovableProjection> getRenewablePercentageByRegion(Integer year) {
     List<PorcentajeRenovableProjection> results = energyRecordRepository.findRenewablePercentageByRegion(year);
 
     if (results.isEmpty()) {
@@ -135,4 +135,5 @@ public class EnergyRecordService {
 
     return results;
   }
+
 }

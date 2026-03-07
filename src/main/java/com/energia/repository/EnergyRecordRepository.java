@@ -1,5 +1,6 @@
 package com.energia.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Pageable; // IMPORTANTE: Importar de org.springframework.data.domain
 
 import com.energia.model.EnergyRecord;
+import com.energia.projection.ChartDataProjection;
 import com.energia.projection.ParticipacionGlobalProjection;
 import com.energia.projection.PorcentajeRenovableProjection;
 import com.energia.projection.ProduccionRegionProjection;
@@ -47,7 +49,7 @@ public interface EnergyRecordRepository extends JpaRepository<EnergyRecord, Long
       "JOIN er.measurementType mt " +
       "WHERE er.year = :year " +
       "GROUP BY r.name")
-  List<PorcentajeRenovableProjection> findRenewablePercentageByRegion(@Param("year") Long year);
+  List<PorcentajeRenovableProjection> findRenewablePercentageByRegion(@Param("year") Integer year);
 
   @Query("SELECT new com.energia.projection.TendenciaSolarProjection(" +
       "er.year, SUM(er.value), mt.unit) " +
@@ -71,7 +73,7 @@ public interface EnergyRecordRepository extends JpaRepository<EnergyRecord, Long
       "JOIN er.measurementType mt " +
       "WHERE er.year = :year " +
       "AND mt.name = 'Producción' " +
-      "AND et.name like '%Wind%'  " +
+      "AND (et.name ILIKE '%Eólica%') " +
       "GROUP BY c.name, mt.unit " +
       "ORDER BY SUM(er.value) DESC")
   // Con Pageable, podrías pedir los 10 mejores, los 5 mejores o los 20 mejores
@@ -111,5 +113,22 @@ public interface EnergyRecordRepository extends JpaRepository<EnergyRecord, Long
       "GROUP BY et.name " +
       "ORDER BY SUM(er.value) DESC")
   List<ParticipacionGlobalProjection> findGlobalConsumptionShare(@Param("year") Long year);
+
+  // 1. Consulta para el Gráfico de Líneas (Tendencia)
+  @Query("SELECT new com.energia.projection.ChartDataProjection(er.year, et.name, SUM(er.value)) " +
+      "FROM EnergyRecord er JOIN er.powerPlant pp JOIN pp.energyType et JOIN pp.company co JOIN co.country c " +
+      "WHERE (:countryName IS NULL OR c.name = :countryName) " +
+      "AND (:energyTypeName IS NULL OR et.name = :energyTypeName) " +
+      "AND er.measurementType.name = 'Producción' " +
+      "GROUP BY er.year, et.name ORDER BY er.year ASC")
+  List<ChartDataProjection> findHistoricalTrend(@Param("countryName") String countryName,
+      @Param("energyTypeName") String energyTypeName);
+
+  // 2. Consulta para KPIs (Producción Total y % Renovable se calculan similar)
+  @Query("SELECT SUM(er.value) FROM EnergyRecord er JOIN er.powerPlant pp JOIN pp.company co JOIN co.country c " +
+      "WHERE er.year = :year " +
+      "AND (:countryName IS NULL OR c.name = :countryName) " +
+      "AND er.measurementType.name = 'Producción'")
+  BigDecimal getGlobalProduction(@Param("year") Integer year, @Param("countryName") String countryName);
 
 }
