@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.energia.model.Company;
 import com.energia.model.EnergyRecord;
 import com.energia.projection.ParticipacionGlobalProjection;
 import com.energia.projection.PorcentajeRenovableProjection;
@@ -35,6 +36,11 @@ public class EnergyRecordController {
   public List<EnergyRecord> findAll() {
     return energyRecordService.findAll();
 
+  }
+
+  @GetMapping("/{id}")
+  public EnergyRecord findById(@PathVariable Long id) {
+    return energyRecordService.findById(id);
   }
 
   @GetMapping("/produccion-renovable/{year}")

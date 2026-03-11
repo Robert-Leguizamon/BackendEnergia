@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.energia.exception.ResourceNotFoundException;
+import com.energia.model.Country;
 import com.energia.model.EnergyRecord;
 import com.energia.model.MeasurementType;
 import com.energia.model.PowerPlant;
@@ -46,6 +47,11 @@ public class EnergyRecordService {
 
   public List<EnergyRecord> findAll() {
     return energyRecordRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+  }
+
+  public EnergyRecord findById(Long id) {
+    return energyRecordRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Registro de energía no encontrado"));
   }
 
   /**
