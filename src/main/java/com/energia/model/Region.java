@@ -61,6 +61,8 @@ public class Region {
   private Country country;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "region")
+  // @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, orphanRemoval =
+  // true)
   private List<PowerPlant> powerPlants;
 }

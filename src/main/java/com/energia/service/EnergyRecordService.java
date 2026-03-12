@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.energia.exception.ResourceNotFoundException;
-import com.energia.model.Country;
 import com.energia.model.EnergyRecord;
 import com.energia.model.MeasurementType;
 import com.energia.model.PowerPlant;
