@@ -21,12 +21,14 @@ public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final Audit_logService audit_LogService;
+  private final JwtService jwtService;
 
   public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-      Audit_logService audit_LogService) {
+      Audit_logService audit_LogService, JwtService jwtService) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
     this.audit_LogService = audit_LogService;
+    this.jwtService = jwtService;
   }
 
   public User crearUsuario(User user) {
@@ -94,8 +96,15 @@ public class UserService {
     // --- AQUÍ CREAMOS EL LOG AUTOMÁTICAMENTE ---
     audit_LogService.registrarAccion(user, "INICIO_SESION_EXITOSO");
 
-    // return "Login correcto";
-    return new LoginResponse("sin_token", user.getUsername(), user.getRole());
+    // 4. Generamos el token real usando el motor que creamos en el Paso 2
+    String tokenReal = jwtService.generateToken(user.getUsername()); // Reemplaza esto con tu método real de generación
+                                                                     // de token, por ejemplo:
+    // JwtService.generateToken(user.getUsername());
+
+    // 5. Devolvemos el objeto LoginResponse con el TOKEN REAL en lugar de
+    // "sin_token"
+    return new LoginResponse(tokenReal, user.getUsername(), user.getRole());
+
   }
 
   // @PostMapping("/login")
