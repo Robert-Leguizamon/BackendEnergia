@@ -116,7 +116,8 @@ public interface EnergyRecordRepository extends JpaRepository<EnergyRecord, Long
 
   // 1. Consulta para el Gráfico de Líneas (Tendencia)
   @Query("SELECT new com.energia.projection.ChartDataProjection(er.year, et.name, SUM(er.value)) " +
-      "FROM EnergyRecord er JOIN er.powerPlant pp JOIN pp.energyType et JOIN pp.company co JOIN co.country c " +
+      "FROM EnergyRecord er " +
+      "JOIN er.powerPlant pp JOIN pp.energyType et JOIN pp.company co JOIN co.country c " +
       "WHERE (:countryName IS NULL OR c.name = :countryName) " +
       "AND (:energyTypeName IS NULL OR et.name = :energyTypeName) " +
       "AND er.measurementType.name = 'Producción' " +
@@ -125,7 +126,11 @@ public interface EnergyRecordRepository extends JpaRepository<EnergyRecord, Long
       @Param("energyTypeName") String energyTypeName);
 
   // 2. Consulta para KPIs (Producción Total y % Renovable se calculan similar)
-  @Query("SELECT SUM(er.value) FROM EnergyRecord er JOIN er.powerPlant pp JOIN pp.company co JOIN co.country c " +
+  @Query("SELECT SUM(er.value) " +
+      "FROM EnergyRecord er " +
+      "JOIN er.powerPlant pp " +
+      "JOIN pp.company co " +
+      "JOIN co.country c " +
       "WHERE er.year = :year " +
       "AND (:countryName IS NULL OR c.name = :countryName) " +
       "AND er.measurementType.name = 'Producción'")
