@@ -165,7 +165,13 @@ public class SecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://127.0.0.1:4200"));
+    // configuration.setAllowedOrigins(List.of("http://localhost:4200",
+    // "http://127.0.0.1:4200"));
+    configuration.setAllowedOrigins(List.of(
+        "http://localhost:4200",
+        "http://127.0.0.1:4200",
+        "http://149.130.174.114:4200" // <--- AÑADE TU IP PÚBLICA AQUÍ
+    ));
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
     // Añadimos "Authorization" explícitamente a los headers permitidos para que el
     // frontend pueda enviar el token

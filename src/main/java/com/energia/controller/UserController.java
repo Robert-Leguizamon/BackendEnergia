@@ -17,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:4200") // <-- Esto para que se pueda conectar con el frontend de angular
+@CrossOrigin(origins = "*") // <--- ESTA ES LA LÍNEA CLAVE
+// @CrossOrigin(origins = "http://localhost:4200") // <-- Esto para que se pueda
+// conectar con el frontend de angular
 
 public class UserController {
   // private final UserRepository userRepository;

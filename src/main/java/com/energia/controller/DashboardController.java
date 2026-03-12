@@ -13,7 +13,7 @@ import com.energia.service.DashboardService;
 
 @RestController
 @RequestMapping("/api/dashboard")
-@CrossOrigin(origins = "*") // Para que el Frontend pueda conectarse
+@CrossOrigin(origins = "http://149.130.174.114:4200") // Para que el Frontend pueda conectarse
 public class DashboardController {
 
   @Autowired
